@@ -1,10 +1,51 @@
 # Space_Invaders_Python
 
 import pygame, sys
+from alien import Alien
 
 class Game:
   def __init__(self):
-    pass
+    #Alien Setup
+    self.aliens = pygame.sprite.Group()
+    self.alien_grid(rows = 6, cols = 8)
+    self.alien_direction = 1 
+
+  def run(self):
+    #Aliens Run Code
+    self.aliens.update(self.alien_direction)
+    self.alien_finder()
+    self.aliens.draw(screen)
+
+  #Alien Grid Setup
+  def alien_grid(self, rows, cols, x_distance = 60, y_distance = 48, x_offset = 70, y_offset = 100):
+    #Arranging the Aliens in Rows and Columns
+    for row_index, row in enumerate(range(rows)):
+      for col_index, col in enumerate(range(cols)):
+        x = col_index * x_distance + x_offset
+        y = row_index * y_distance + y_offset
+
+        
+        #Colour Coding the Aliens
+        if row_index == 0: alien_sprite = Alien('yellow', x, y)
+        elif 1 <= row_index <=2: alien_sprite = Alien('green', x, y)
+        else: alien_sprite = Alien('red', x, y)
+        self.aliens.add(alien_sprite)
+
+  def alien_finder(self):
+    all_aliens = self.aliens.sprites()
+    for alien in all_aliens:
+      if alien.rect.right >= screen_width:
+        self.alien_direction = -1
+        self.alien_down(2)
+      elif alien.rect.left <= 0:
+        self.alien_direction = 1
+        self.alien_down(2)
+
+  def alien_down(self, distance):
+    if self.aliens:
+      for alien in self.aliens.sprite():
+        alien.rect.y += distance
+    
 
   def run(self):
     pass
