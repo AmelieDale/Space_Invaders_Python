@@ -2,6 +2,8 @@
 
 import pygame, sys
 from alien import Alien
+from laser import Laser
+from random import choice
 
 class Game:
   def __init__(self):
@@ -10,11 +12,18 @@ class Game:
     self.alien_grid(rows = 6, cols = 8)
     self.alien_direction = 1 
 
+    #Alien Lasers
+    self.alien_lasers = pygame.sprite.Group()
+
   def run(self):
     #Aliens Run Code
     self.aliens.update(self.alien_direction)
     self.alien_finder()
     self.aliens.draw(screen)
+
+    #Lasers Run Code
+    self.alien_lasers.update()
+    self.alien_lasers.draw(screen)
 
   #Alien Grid Setup
   def alien_grid(self, rows, cols, x_distance = 60, y_distance = 48, x_offset = 70, y_offset = 100):
@@ -45,10 +54,12 @@ class Game:
     if self.aliens:
       for alien in self.aliens.sprite():
         alien.rect.y += distance
-    
 
-  def run(self):
-    pass
+  def alien_shoot(self):
+    if self.aliens:
+      random_alien = choice(self.aliens.sprites())
+      laser_sprite = Laser(random_alien.rect.center, 6, screen_height)
+      self.alien_lasers.add(laser_sprite)
 
 if __name__ == '__main__':
     pygame.init()
@@ -57,6 +68,9 @@ if __name__ == '__main__':
     screen = pygame.display.set_mode((screen_width, screen_height))
     clock = pygame.time.Clock()
     game = Game()
+
+    ALIENLASER = pygaame.USEREVENT + 1
+    pygame.time.set_timer(ALIENLASER, 800)
 
     while True:
         for event in pygame.event.get():
