@@ -4,6 +4,7 @@ import pygame, sys
 from alien import Alien
 from laser import Laser
 from random import choice
+from alien import MysteryShip
 
 alien_rows = 6
 alien_cols = 8
@@ -24,7 +25,8 @@ class Game:
     self.alien_direction = 1 
     self.alien_speed = 1
     self.previous_alien_count = len(self.aliens.sprites())
-
+    self.mystery_ship_group = pygame.sprite.GroupSingle()
+  
     #Alien Lasers
     self.alien_lasers = pygame.sprite.Group()
 
@@ -87,6 +89,9 @@ class Game:
       random_alien = choice(self.aliens.sprites())
       laser_sprite = Laser(random_alien.rect.center, 6, screen_height)
       self.alien_lasers.add(laser_sprite)
+
+  def create_mystery_ship(self):
+		self.mystery_ship_group.add(MysteryShip(self.screen_width, self.offset))
 
 if __name__ == '__main__':
     pygame.init()
