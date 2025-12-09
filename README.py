@@ -9,6 +9,9 @@ alien_rows = 6
 alien_cols = 8
 alien_timer = 800
 
+MYSTERYSHIP = pygame.USEREVENT + 1
+pygame.time.set_timer(MYSTERYSHIP, random.randint(4000,8000))
+
 class Game:
   def __init__(self, screen, screen_width, screen_height):
     #Screen Setup
@@ -105,6 +108,10 @@ if __name__ == '__main__':
 
             if event.type == ALIENLASER:
               game.alien_shoot()
+
+            if event.type == MYSTERYSHIP and game.run:
+                game.create_mystery_ship()
+                pygame.time.set_timer(MYSTERYSHIP, random.randint(4000,8000))
             
             if event.type == pygame.KEYDOWN:
               if event.key == pygame.K_SPACE and game.aliens:
